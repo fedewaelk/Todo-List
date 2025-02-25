@@ -8,6 +8,7 @@ const addProjectBtn = document.getElementById("addProjectBtn");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const projectList = document.getElementById("projectList");
 const projectName = document.getElementById("projectName");
+const taskList = document.getElementById("taskList");
 
 const addProject = () => {
   const projectNameInput = prompt("Enter project name");
@@ -30,6 +31,26 @@ const renderProjects = () => {
 
 const selectProject = (project) => {
   projectName.textContent = project.name;
+  renderTasks(project);
+};
+
+const renderTasks = (project) => {
+  taskList.innerHTML = "";
+  const tasks = project.getTasks();
+  tasks.forEach(task => {
+    const taskItem = document.createElement("li");
+    taskItem.textContent = task.title;
+    taskList.appendChild(taskItem);
+  });
 };
 
 addProjectBtn.addEventListener("click", addProject);
+addTaskBtn.addEventListener("click", () => {
+  const taskTitle = prompt("Enter task title");
+  const selectedProject = projects.find(p => p.name === projectName.textContent);
+  if (taskTitle && selectedProject) {
+    const newTask = Task(taskTitle);
+    selectedProject.addTask(newTask);
+    renderTasks(selectedProject);
+  }
+});
