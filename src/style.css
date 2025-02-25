@@ -3,16 +3,46 @@ body {
     margin: 0;
     display: flex;
     height: 100vh;
-}
-#container {
+  }
+  
+  #container {
     display: flex;
     width: 100%;
-}
-#sidebar {
+  }
+  
+  #sidebar {
     width: 250px;
-    background: #f4f4f4;
-    padding: 20px;
+    background-color: #f4f4f4;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
+  }
+  
+  #sidebar button {
+    margin-bottom: 10px;
+  }
+  
+  #mainContent {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  #projectList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #projectList li {
+    cursor: pointer;
+    margin: 5px 0;
+  }
+  
+  #taskList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #taskList li {
+    margin: 5px 0;
+  }

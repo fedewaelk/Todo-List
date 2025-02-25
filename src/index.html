@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
 </head>
 <body>
-    <div id="container">
-        <aside id="sidebar">
-            <button id="add-list">Add List</button>
-            <button id="add-task">Add Task</button>
-            <button>All Tasks</button>
-            <div id="lists">My Lists</div>
-        </aside>
-        <main id="main-content">
-            <h1 id="list-title">All Tasks</h1>
-            <div id="tasks"></div>
-        </main>
-    </div>
+  <div id="container">
+    <aside id="sidebar">
+      <button id="addProjectBtn">Add Project</button>
+      <button id="addTaskBtn">Add Task</button>
+      <ul id="projectList"></ul>
+    </aside>
+    <main id="mainContent">
+      <h1 id="projectName">All Tasks</h1>
+      <ul id="taskList"></ul>
+    </main>
+  </div>
+
+  <script src="src/index.js"></script>
 </body>
 </html>

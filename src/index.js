@@ -2,17 +2,34 @@ import './style.css';
 import Project from "./project.js";
 import Task from "./task.js";
 
-const myProject = Project("My First Project");
-console.log("Project created:", myProject);
+let projects = [];
 
-const task1 = Task("Buy groceries", "Milk, bread, and eggs", "2024-12-01", "high");
-const task2 = Task("Do laundry", "", "2024-12-02", "low");
+const addProjectBtn = document.getElementById("addProjectBtn");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const projectList = document.getElementById("projectList");
+const projectName = document.getElementById("projectName");
 
-myProject.addTask(task1);
-myProject.addTask(task2);
+const addProject = () => {
+  const projectNameInput = prompt("Enter project name");
+  if (projectNameInput) {
+    const newProject = Project(projectNameInput);
+    projects.push(newProject);
+    renderProjects();
+  }
+};
 
-console.log("Project after adding tasks:", myProject.getTasks());
+const renderProjects = () => {
+  projectList.innerHTML = "";
+  projects.forEach(project => {
+    const projectItem = document.createElement("li");
+    projectItem.textContent = project.name;
+    projectItem.addEventListener("click", () => selectProject(project));
+    projectList.appendChild(projectItem);
+  });
+};
 
-myProject.removeTask(task1.id);
-console.log("Project after removing a task:", myProject.getTasks());
+const selectProject = (project) => {
+  projectName.textContent = project.name;
+};
 
+addProjectBtn.addEventListener("click", addProject);
