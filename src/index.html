@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Webpack Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
 </head>
 <body>
-  <div id="app"></div>
-  <!-- El script bundle.js se insertará automáticamente -->
+    <div id="container">
+        <aside id="sidebar">
+            <button id="add-list">Add List</button>
+            <button id="add-task">Add Task</button>
+            <button>All Tasks</button>
+            <div id="lists">My Lists</div>
+        </aside>
+        <main id="main-content">
+            <h1 id="list-title">All Tasks</h1>
+            <div id="tasks"></div>
+        </main>
+    </div>
 </body>
 </html>
