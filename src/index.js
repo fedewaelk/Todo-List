@@ -1,108 +1,72 @@
 import './style.css';
+import { saveProjectsToLocalStorage, loadProjectsFromLocalStorage } from "./storage.js";
+import { renderProjects, renderTasks } from "./dom.js";
 import Project from "./project.js";
 import Task from "./task.js";
 
-let projects = [];
+let projects = loadProjectsFromLocalStorage();
 
+const projectModal = document.getElementById("projectModal");
+const closeModalBtn = document.querySelector(".close");
+const saveProjectBtn = document.getElementById("saveProjectBtn");
+const projectNameInput = document.getElementById("projectNameInput");
+const projectList = document.getElementById("projectList");
 const addProjectBtn = document.getElementById("addProjectBtn");
 const addTaskBtn = document.getElementById("addTaskBtn");
-const projectList = document.getElementById("projectList");
 const projectName = document.getElementById("projectName");
 const taskList = document.getElementById("taskList");
 
-const saveProjectsToLocalStorage = () => {
-  localStorage.setItem("projects", JSON.stringify(projects));
-};
-
-const loadProjectsFromLocalStorage = () => {
-  const storedProjects = JSON.parse(localStorage.getItem("projects"));
-  if (storedProjects) {
-    projects = storedProjects.map(projData => {
-      const project = Project(projData.name);
-      project.tasks = projData.tasks.map(taskData => Task(taskData.title));
-      return project;
-    });
-  }
-};
-
 const addProject = () => {
-  const projectNameInput = prompt("Enter project name");
-  if (projectNameInput) {
-    const newProject = Project(projectNameInput);
-    projects.push(newProject);
-    saveProjectsToLocalStorage();
-    renderProjects();
-  }
+  const name = projectNameInput.value.trim();
+  if (!name) return; // Evita agregar proyectos sin nombre
+
+  const newProject = Project(name);
+  projects.push(newProject);
+  saveProjectsToLocalStorage(projects);
+  renderProjects(projects, projectList, selectProject, deleteProject);
+
+  projectNameInput.value = ""; // Limpiar input
+  projectModal.style.display = "none"; // Cerrar modal
 };
 
-const renderProjects = () => {
-    projectList.innerHTML = "";
-    projects.forEach(project => {
-      const projectItem = document.createElement("li");
-      projectItem.textContent = project.name;
-  
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "❌";
-      deleteBtn.classList.add("delete-project");
-      deleteBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        deleteProject(project.id);
-      });
-  
-      projectItem.appendChild(deleteBtn);
-      projectItem.addEventListener("click", () => selectProject(project));
-      projectList.appendChild(projectItem);
-    });
-};  
+// Mostrar el modal
+addProjectBtn.addEventListener("click", () => {
+  projectModal.style.display = "block";
+});
+
+// Cerrar el modal
+closeModalBtn.addEventListener("click", () => {
+  projectModal.style.display = "none";
+});
+
+// Guardar nuevo proyecto
+saveProjectBtn.addEventListener("click", addProject);
+
+// Cerrar modal al hacer clic fuera de él
+window.addEventListener("click", (e) => {
+  if (e.target === projectModal) {
+    projectModal.style.display = "none";
+  }
+});
 
 const selectProject = (project) => {
   projectName.textContent = project.name;
-  renderTasks(project);
+  renderTasks(project, taskList);
 };
 
 const deleteProject = (projectId) => {
-    const project = projects.find(p => p.id === projectId);
-  
-    const confirmation = window.confirm(`Are you sure you want to delete the project "${project.name}"?`);
-  
-    if (!confirmation) return;
-  
-    projects = projects.filter(project => project.id !== projectId);
-    
-    if (projectName.textContent === project.name) {
-      projectName.textContent = "";
-      taskList.innerHTML = "";
-    }
-  
-    saveProjectsToLocalStorage();
-    renderProjects();
+  projects = projects.filter(project => project.id !== projectId);
+  saveProjectsToLocalStorage(projects);
+  renderProjects(projects, projectList, selectProject, deleteProject);
 };
 
-const renderTasks = (project) => {
-  taskList.innerHTML = "";
-  const tasks = project.getTasks();
-  tasks.forEach(task => {
-    const taskItem = document.createElement("li");
-    taskItem.textContent = task.title;
-    taskList.appendChild(taskItem);
-  });
-};
-
-const addTask = () => {
-  const taskTitle = prompt("Enter task title");
-  const selectedProject = projects.find(p => p.name === projectName.textContent);
-  if (taskTitle && selectedProject) {
-    const newTask = Task(taskTitle);
-    selectedProject.addTask(newTask);
-    saveProjectsToLocalStorage();
-    renderTasks(selectedProject);
-  }
-};
-
+// Cargar proyectos al iniciar la página
 document.addEventListener("DOMContentLoaded", () => {
-  loadProjectsFromLocalStorage();
-  renderProjects();
+  renderProjects(projects, projectList, selectProject, deleteProject);
 });
 
-addProjectBtn.addEventListener("click", addProject);
-addTaskBtn.addEventListener("click", addTask);
+// Validar que `addTask` esté definido antes de agregar event listener
+if (addTaskBtn && typeof addTask === "function") {
+  addTaskBtn.addEventListener("click", addTask);
+}
+
