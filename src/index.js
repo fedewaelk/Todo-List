@@ -53,7 +53,7 @@ const renderProjects = () => {
       projectItem.addEventListener("click", () => selectProject(project));
       projectList.appendChild(projectItem);
     });
-  };  
+};  
 
 const selectProject = (project) => {
   projectName.textContent = project.name;
@@ -61,17 +61,22 @@ const selectProject = (project) => {
 };
 
 const deleteProject = (projectId) => {
+    const project = projects.find(p => p.id === projectId);
+  
+    const confirmation = window.confirm(`Are you sure you want to delete the project "${project.name}"?`);
+  
+    if (!confirmation) return;
+  
     projects = projects.filter(project => project.id !== projectId);
     
-    if (projectName.textContent === projectId) {
+    if (projectName.textContent === project.name) {
       projectName.textContent = "";
       taskList.innerHTML = "";
     }
   
     saveProjectsToLocalStorage();
     renderProjects();
-  };
-  
+};
 
 const renderTasks = (project) => {
   taskList.innerHTML = "";
