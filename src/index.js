@@ -36,19 +36,42 @@ const addProject = () => {
 };
 
 const renderProjects = () => {
-  projectList.innerHTML = "";
-  projects.forEach(project => {
-    const projectItem = document.createElement("li");
-    projectItem.textContent = project.name;
-    projectItem.addEventListener("click", () => selectProject(project));
-    projectList.appendChild(projectItem);
-  });
-};
+    projectList.innerHTML = "";
+    projects.forEach(project => {
+      const projectItem = document.createElement("li");
+      projectItem.textContent = project.name;
+  
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "❌";
+      deleteBtn.classList.add("delete-project");
+      deleteBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        deleteProject(project.id);
+      });
+  
+      projectItem.appendChild(deleteBtn);
+      projectItem.addEventListener("click", () => selectProject(project));
+      projectList.appendChild(projectItem);
+    });
+  };  
 
 const selectProject = (project) => {
   projectName.textContent = project.name;
   renderTasks(project);
 };
+
+const deleteProject = (projectId) => {
+    projects = projects.filter(project => project.id !== projectId);
+    
+    if (projectName.textContent === projectId) {
+      projectName.textContent = "";
+      taskList.innerHTML = "";
+    }
+  
+    saveProjectsToLocalStorage();
+    renderProjects();
+  };
+  
 
 const renderTasks = (project) => {
   taskList.innerHTML = "";
