@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="styles.css">
+<script defer src="main.js"></script></head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <button class="sidebar-button" id="addTaskButton">Add Task</button>
+            <button class="sidebar-button" id="addProjectButton">Add project</button>
+            <ul id="projects">
+                <p>Projects</p>
+                <li><button id="all-tasks">All Tasks</button></li>
+            </ul>
+            <ul id="my-projects">
+                <p>My Projects</p>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <h2 id="current-project-title">All Tasks</h2>
+            <div id="task-container"></div>
+        </main>
+</body>
+</html>
